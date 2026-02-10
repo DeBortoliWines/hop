@@ -539,7 +539,8 @@ public class GoogleSheetsOutputDialog extends BaseTransformDialog {
   private void selectWorksheet() {
     try {
       NetHttpTransport netHttpTransport =
-          GoogleSheetsConnectionFactory.newTransport(meta.getProxyHost(), meta.getProxyPort());
+          GoogleSheetsConnectionFactory.newTransport(
+              variables.resolve(meta.getProxyHost()), variables.resolve(meta.getProxyPort()));
       JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
       String scope = SheetsScopes.SPREADSHEETS_READONLY;
 
@@ -548,7 +549,8 @@ public class GoogleSheetsOutputDialog extends BaseTransformDialog {
               scope,
               variables.resolve(meta.getJsonCredentialPath()),
               variables.resolve(meta.getImpersonation()),
-              variables);
+              variables,
+              netHttpTransport);
       Sheets service =
           new Sheets.Builder(
                   netHttpTransport,
@@ -597,7 +599,8 @@ public class GoogleSheetsOutputDialog extends BaseTransformDialog {
   private void selectSpreadSheetKey() {
     try {
       NetHttpTransport netHttpTransport =
-          GoogleSheetsConnectionFactory.newTransport(meta.getProxyHost(), meta.getProxyPort());
+          GoogleSheetsConnectionFactory.newTransport(
+              variables.resolve(meta.getProxyHost()), variables.resolve(meta.getProxyPort()));
       JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
       String scope = "https://www.googleapis.com/auth/drive";
       HttpRequestInitializer credential =
@@ -605,7 +608,8 @@ public class GoogleSheetsOutputDialog extends BaseTransformDialog {
               scope,
               variables.resolve(meta.getJsonCredentialPath()),
               variables.resolve(meta.getImpersonation()),
-              variables);
+              variables,
+              netHttpTransport);
       Drive service =
           new Drive.Builder(
                   netHttpTransport,
@@ -661,7 +665,8 @@ public class GoogleSheetsOutputDialog extends BaseTransformDialog {
   private void testServiceAccount() {
     try {
       NetHttpTransport netHttpTransport =
-          GoogleSheetsConnectionFactory.newTransport(meta.getProxyHost(), meta.getProxyPort());
+          GoogleSheetsConnectionFactory.newTransport(
+              variables.resolve(meta.getProxyHost()), variables.resolve(meta.getProxyPort()));
       JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
       String scope = SheetsScopes.SPREADSHEETS_READONLY;
 
@@ -670,7 +675,8 @@ public class GoogleSheetsOutputDialog extends BaseTransformDialog {
               scope,
               variables.resolve(wPrivateKeyStore.getText()),
               variables.resolve(wImpersonation.getText()),
-              variables);
+              variables,
+              netHttpTransport);
       // Build a Drive connection to test it
       //
       new Drive.Builder(
